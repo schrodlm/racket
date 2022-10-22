@@ -1,0 +1,131 @@
+#lang racket
+
+; Types
+; 1) atomic types = booleans and number
+; 2) lists = everything is a list, even null
+
+; Working with lists :
+; 1) (cons A B) -> creates a cons cell (A . B) (similar to std::pair) from these we can create lists
+; 2) (car X)    -> return first element from cons cell
+; 3) (cdr X)    -> return second element from cons cell
+
+; Predicates
+; (null? expr) - true if expr == null else false
+; (list? expr) - true if exptr is a lists (even null) else false
+; (pair? expr) - true if expr is cons-cell (meaning not-null list)
+
+; IF-statements
+; (if expr body-true body-false)
+; (cond (expr-1 body-1) ... (expr-n body-n)) - equivalent to switch or if-elseif-else constructs.
+
+
+;Logical operators
+; (not expr)
+; (and expr1 expr2)
+; (or expr1 expr2)
+
+
+
+
+;Checks if expression is an atom
+(define (atom? x)
+  (and (not(null? x))
+       (not(pair? x))
+  )
+)
+
+;Increment number by one - typesafe
+(define (inc x)
+  ( if
+       (atom? x)
+       (+ x 1)
+       (error "Not atomic")
+  )
+)
+
+
+;Decrement number by one - typesafe
+(define (dec x)
+  (if
+   (atom? x)
+   (- x 1)
+   (error "Not atomic")
+  )
+)
+
+
+;Checks if argument is zero
+(define (isZero x)
+   (= x 0)
+   )
+
+;Add function
+(define (add x y)
+  (+ x y)
+)
+
+;Multiply
+(define (mtply x y)
+  (* x y)
+)
+
+;========================================================================
+
+
+; Length of a list
+
+(define (lstlen x)
+  (if (null? x) ;base case
+      0
+      (if (atom? (car x)) ;if it is not null check if it is atom - number
+  (+ 1 (lstlen (cdr x))) ; if it is add +1 and recurse deeper
+  (if (= (lstlen (car x)) 0) ; if it is not check if pair.first is a list with a len of 0 - we have an empty list and we treat it like a atom
+      (+ 1 (lstlen (cdr x))) ; if it is empty list
+      (+ (lstlen (car x)) (lstlen (cdr x))) ; not an empty list
+      )
+    )
+   )
+ )
+
+; Faster
+(define (lstlen-f x)
+  (if (null? x) ;base case
+      0
+      (if (atom? (car x)) ;if it is not null check if it is atom - number
+          (+ 1 (lstlen (cdr x))) ; if it is add +1 and recurse deeper
+          (+ (plus-one-if-zero (lstlen (car x))) (lstlen (cdr x))
+      )
+    )
+   )
+ )
+
+
+
+(define (plus-one-if-zero x)
+  (if (= x 0)
+      1
+      x))
+
+
+; ==================================================================================================
+
+; my-sum returns a sum of elements in a list
+
+(define (my-sum x)
+  (if (null? x) ;base case
+      0
+      (if (atom? (car x)) ;if it is not null check if it is atom - number
+          (+ (car x) (my-sum (cdr x))) ; if it is add +1 and recurse deeper
+          (+ (plus-one-if-zero (my-sum (car x))) (my-sum (cdr x))
+      )
+    )
+   )
+ )
+
+;my-nth - return n-th element from the lists
+(define (my-nth list pos)
+  (if (isZero pos)
+      (car list)
+      (my-nth (cdr list) (dec pos))
+      )
+  )
