@@ -129,3 +129,119 @@
       (my-nth (cdr list) (dec pos))
       )
   )
+
+;my-maxL - returns biggest element from the list
+
+(define (my-maxL x)
+  (if (null? (cdr x))
+      (car x)
+      (max (my-maxL (cdr x)) (car x))
+      )
+  )
+
+;my-minL - returns smallest element from the list
+(define (my-minL x)
+  (if (null? (cdr x))
+      (car x)
+      (min (my-minL (cdr x)) (car x))
+           )
+      )
+
+;returns true if element is in the list otherwise false
+(define (my-member x target)
+  (if (null? x)
+      #false
+      (if (= (car x) target)
+          #true
+          (my-member (cdr x) target)
+          )
+      )
+  )
+
+;return list from 1 to n
+(define (my-range n)
+  (my-range_in n 1)
+  )
+  
+(define (my-range_in n current) 
+  (if (= current n)
+      (cons n null)
+      (cons current (my-range_in n (+ current 1)))
+      )
+  )
+
+
+;appends element to the end of the list
+(define (my-append x list)
+  (if (null? list)
+      (cons x null)
+      (cons (car list) (my-append x (cdr list)))
+      )
+  )
+
+;prepends element to the start of the list
+(define (my-prepend x list)
+  (cons x list)
+  )
+
+;prepends list1 to list2
+(define (my-prependL l1 l2)
+  (if (null? (cdr l1))
+      (cons (car l1) l2)
+      (cons (car l1) (my-prependL (cdr l1) l2))
+      )
+  )
+
+;insert element into specified position in the list
+(define (my-insert e n list)
+  (if (isZero n)
+      (cons e (cdr list))
+      (cons (car list) (my-insert e (dec n) (cdr list)))
+      )
+  )
+
+;creates a list containg element e n times
+(define (my-repeat n e)
+  (if (isZero n)
+      null
+      (my-prepend e (my-repeat (dec n) e))
+      )
+  )
+
+;reverses given list
+(define (my-reverse x)
+  (if (null? x)
+      null
+      (my-append (car x) (my-reverse (cdr x)))
+      )
+  )
+     
+;deletes first occurence of e in the list
+(define (my-remove-f e list)
+  (if (= (car list) e)
+      (cdr list)
+      (cons (car list) (my-remove-f e (cdr list)))
+      )
+  )
+
+;deletes all occurences of e in the list
+(define (my-remove-all e list)
+  (if (null? list)
+      null
+      (if (= (car list) e)
+          (my-remove-all e (cdr list))       
+          (cons (car list) (my-remove-all e (cdr list)))
+      )
+  )
+  )
+;delete last occurence of e in the list
+(define (my-remove-l e list)
+  (my-reverse (my-remove-f e (my-reverse list)))
+  )
+  
+
+
+
+
+
+
