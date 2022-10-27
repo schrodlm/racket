@@ -238,10 +238,58 @@
 (define (my-remove-l e list)
   (my-reverse (my-remove-f e (my-reverse list)))
   )
-  
+
+
+;inserts element between all values inside a list
+(define (my-insert-between e list)
+  (if (null? (cdr list))
+      list
+      (cons (car list) (cons e (my-insert-between e (cdr list))))
+      )
+  )
+
+;duplicates every element in the list with a value of 'e'
+(define (my-duplicate e list)
+  (if (null? (cdr list))
+      list
+      (if (= e (car list))
+          (cons (car list) (cons e (my-duplicate e (cdr list))))
+          (cons (car list) (my-duplicate e (cdr list)))
+          )
+      )
+  )
+          
+;===============================================================================================
+
+;returns true if element is inside a list, list can have more lists in it
+(define (my-memberS s list)
+  (if (null? list)
+      #false
+      (if (list? (car list))
+                 (if(my-memberS s (car list))
+                    #true
+                    (my-memberS s (cdr list)))
+                 (if (= (car list) s)
+                     #true
+                     (my-memberS s (cdr list))
+                     )
+                 )
+      )           
+)
+
+(define (my-sumS list)
+  (if (null? list)
+      0
+      (if (list? (car list))
+          (+ (my-sumS (car list)) (my-sumS (cdr list)))
+          (+ (car list) (my-sumS (cdr list)))
+          )
+      )
+  )
 
 
 
 
+ 
 
 
